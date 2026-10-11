@@ -68,7 +68,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} suppressHydrationWarning>
             <div className="mb-4">
               <label className="block mb-2 text-sm font-medium text-gray-700">Username</label>
               <input
@@ -78,6 +78,7 @@ export default function LoginPage() {
                 className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Your username"
                 required
+                suppressHydrationWarning
               />
             </div>
 
@@ -90,12 +91,14 @@ export default function LoginPage() {
                 className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="••••••••"
                 required
+                suppressHydrationWarning
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
+              suppressHydrationWarning
               className="w-full text-white bg-gradient-to-r from-green-500 to-purple-600 font-medium rounded-lg text-sm px-5 py-2.5 transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing in...' : 'Login'}
