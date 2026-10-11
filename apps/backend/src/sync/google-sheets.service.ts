@@ -60,7 +60,7 @@ export class GoogleSheetsService {
   private initializeClient() {
     try {
       const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-      const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+      const privateKey = (process.env.GOOGLE_PRIVATE_KEY || process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY)?.replace(/\\n/g, '\n');
 
       if (!serviceAccountEmail || !privateKey) {
         this.logger.warn(
