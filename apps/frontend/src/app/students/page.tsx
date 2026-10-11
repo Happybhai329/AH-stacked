@@ -680,13 +680,15 @@ export default function StudentsPage() {
                     All ({activeStudents?.data?.length ?? 0})
                   </button>
                   {batches?.map((b: any) => {
-                    const studentCountInBatch = activeStudents?.data?.filter((s: any) => s.batchName === b.name).length ?? 0;
+                    const studentCountInBatch = activeStudents?.data?.filter((s: any) => 
+                      (s.batchName || '').trim().toLowerCase() === (b.name || '').trim().toLowerCase()
+                    ).length ?? 0;
                     return (
                       <button
                         key={b.id}
                         onClick={() => setActiveBatchFilter(b.name)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                          activeBatchFilter === b.name
+                          activeBatchFilter.trim().toLowerCase() === b.name.trim().toLowerCase()
                             ? 'bg-emerald-600 text-white shadow-md'
                             : 'bg-slate-700 text-slate-300 hover:bg-slate-650'
                         }`}
@@ -726,7 +728,7 @@ export default function StudentsPage() {
                   <div className="space-y-2.5 max-h-[450px] overflow-y-auto pr-2">
                     {activeStudents?.data
                       ?.filter((s: any) => {
-                        if (activeBatchFilter && s.batchName !== activeBatchFilter) return false;
+                        if (activeBatchFilter && (s.batchName || '').trim().toLowerCase() !== activeBatchFilter.trim().toLowerCase()) return false;
                         if (search) {
                           const query = search.toLowerCase();
                           return (
