@@ -570,13 +570,13 @@ export default function StudentsPage() {
                 >
                   All ({activeStudents?.meta?.total ?? activeStudents?.data?.length ?? 0})
                 </button>
-                {batches?.map((b: any) => {
+                {batches?.map((b: any, idx: number) => {
                   const studentCountInBatch = activeStudents?.data?.filter((s: any) =>
                     (s.batchName || '').trim().toLowerCase() === (b.name || '').trim().toLowerCase()
                   ).length ?? 0;
                   return (
                     <button
-                      key={b.id}
+                      key={b.id || b.name || `batch-pill-${idx}`}
                       onClick={() => setActiveBatchFilter(b.name)}
                       className={`px-3 py-1 text-xs rounded font-medium transition ${
                         activeBatchFilter.trim().toLowerCase() === b.name.trim().toLowerCase()
@@ -613,9 +613,9 @@ export default function StudentsPage() {
                       }
                       return true;
                     })
-                    ?.map((student: any) => (
+                    ?.map((student: any, idx: number) => (
                       <div
-                        key={student.id}
+                        key={student.id || student.studentId || `active-student-${idx}`}
                         onClick={() => setSelectedStudent(student)}
                         className={`p-3 hover:bg-gray-50 cursor-pointer active-student-item transition ${
                           selectedStudent?.id === student.id ? 'bg-indigo-50 border-l-4 border-indigo-600' : ''
@@ -728,9 +728,9 @@ export default function StudentsPage() {
                       (adm.fatherName || '').toLowerCase().includes(q)
                     );
                   })
-                  ?.map((adm: any) => (
+                  ?.map((adm: any, idx: number) => (
                     <div
-                      key={adm.id}
+                      key={adm.admissionRowNumber || adm.fullData?.id || adm.studentId || `new-student-${idx}`}
                       onClick={() => {
                         setSelectedAdmission(adm.fullData || adm);
                         setSelectedEnrollBatch('');
@@ -785,8 +785,8 @@ export default function StudentsPage() {
                         onChange={(e) => setSelectedEnrollBatch(e.target.value)}
                       >
                         <option value="">Select Batch</option>
-                        {batches?.map((b: any) => (
-                          <option key={b.id} value={b.id}>{b.name}</option>
+                        {batches?.map((b: any, idx: number) => (
+                          <option key={b.id || b.name || `enroll-batch-${idx}`} value={b.id}>{b.name}</option>
                         ))}
                       </select>
                     </div>
@@ -860,8 +860,8 @@ export default function StudentsPage() {
                 className="border border-gray-300 p-2.5 w-full rounded-lg text-sm bg-white"
               >
                 <option value="">Select new batch</option>
-                {batches?.map((b: any) => (
-                  <option key={b.id} value={b.id}>{b.name}</option>
+                {batches?.map((b: any, idx: number) => (
+                  <option key={b.id || b.name || `change-batch-${idx}`} value={b.id}>{b.name}</option>
                 ))}
               </select>
             </div>
@@ -915,8 +915,8 @@ export default function StudentsPage() {
                           <td colSpan={6} className="p-4 text-center text-gray-500">No batch history found for this student.</td>
                         </tr>
                       ) : (
-                        batchHistory.map((item: any) => (
-                          <tr key={item.id} className="hover:bg-gray-50">
+                        batchHistory.map((item: any, idx: number) => (
+                          <tr key={item.id || `history-${idx}`} className="hover:bg-gray-50">
                             <td className="p-2.5">{new Date(item.dateOfChange).toLocaleDateString()}</td>
                             <td className="p-2.5 font-medium">{item.studentId}</td>
                             <td className="p-2.5">{item.studentName}</td>
@@ -971,7 +971,7 @@ export default function StudentsPage() {
             </div>
             <div id="sync-studentsid-list" className="border border-gray-200 rounded-lg max-h-96 overflow-y-auto bg-white divide-y shadow-sm">
               {syncPreview?.mismatches?.map((m: any, idx: number) => (
-                <div key={idx} className="p-3 hover:bg-gray-50 flex items-center justify-between text-sm">
+                <div key={m.studentId || m.oldId || `mismatch-${idx}`} className="p-3 hover:bg-gray-50 flex items-center justify-between text-sm">
                   <div>
                     <div className="font-medium text-gray-900">{m.studentName}</div>
                     <div className="text-xs text-gray-500">Father: {m.fatherName} | Mob: {m.mobile}</div>
@@ -1016,11 +1016,11 @@ export default function StudentsPage() {
             </div>
             <div id="db-duplicates-list" className="border border-gray-200 rounded-lg max-h-96 overflow-y-auto bg-white divide-y shadow-sm">
               {duplicates?.groups?.map((group: any, gIdx: number) => (
-                <div key={gIdx} className="p-4 bg-gray-50/50">
+                <div key={group.duplicateKey || `dupe-group-${gIdx}`} className="p-4 bg-gray-50/50">
                   <div className="font-bold text-sm text-rose-800 mb-2">Duplicate Group #{gIdx + 1} ({group.count} records)</div>
                   <div className="space-y-2">
                     {group.rows?.map((row: any, rIdx: number) => (
-                      <div key={rIdx} className="bg-white p-3 rounded border border-gray-200 text-xs flex justify-between items-center">
+                      <div key={row.studentId || row.rowNumber || `dupe-row-${gIdx}-${rIdx}`} className="bg-white p-3 rounded border border-gray-200 text-xs flex justify-between items-center">
                         <div>
                           <div className="font-semibold text-gray-900">{row.studentName} (ID: {row.studentId})</div>
                           <div className="text-gray-500">Father: {row.fatherName} | Mother: {row.motherName} | Mob: {row.mobile} | Class: {row.class}</div>
@@ -1113,8 +1113,8 @@ export default function StudentsPage() {
                   <div id="add-batch-step-2" className="add-batch-step">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Select Subjects (Multiple Selection)</label>
                     <div id="add-batch-subjects-container" className="border border-gray-300 p-3 rounded-lg mb-3 bg-white max-h-48 overflow-y-auto space-y-2">
-                      {subjects?.map((sub: any) => (
-                        <label key={sub.id} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                      {subjects?.map((sub: any, idx: number) => (
+                        <label key={sub.id || sub.code || `add-batch-sub-${idx}`} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
                           <input
                             type="checkbox"
                             checked={newBatchSubjects.includes(sub.id)}
@@ -1191,8 +1191,8 @@ export default function StudentsPage() {
                     onChange={(e) => handleSelectEditBatch(e.target.value)}
                   >
                     <option value="">Select batch</option>
-                    {batches?.map((b: any) => (
-                      <option key={b.id} value={b.id}>{b.name}</option>
+                    {batches?.map((b: any, idx: number) => (
+                      <option key={b.id || b.name || `edit-batch-${idx}`} value={b.id}>{b.name}</option>
                     ))}
                   </select>
                 </div>
@@ -1226,8 +1226,8 @@ export default function StudentsPage() {
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Edit Subjects (Tick/Untick to modify)</label>
                       <div id="edit-batch-subjects-container" className="border border-gray-300 p-3 rounded-lg bg-white max-h-48 overflow-y-auto space-y-2">
-                        {subjects?.map((sub: any) => (
-                          <label key={sub.id} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                        {subjects?.map((sub: any, idx: number) => (
+                          <label key={sub.id || sub.code || `edit-batch-sub-${idx}`} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
                             <input
                               type="checkbox"
                               checked={editBatchSubjects.includes(sub.id)}
@@ -1279,8 +1279,8 @@ export default function StudentsPage() {
                     onChange={(e) => setSelectedDeleteBatchId(e.target.value)}
                   >
                     <option value="">Select batch</option>
-                    {batches?.map((b: any) => (
-                      <option key={b.id} value={b.id}>{b.name}</option>
+                    {batches?.map((b: any, idx: number) => (
+                      <option key={b.id || b.name || `del-batch-${idx}`} value={b.id}>{b.name}</option>
                     ))}
                   </select>
                 </div>
@@ -1330,8 +1330,8 @@ export default function StudentsPage() {
                                     <option value="">Select target batch</option>
                                     {batches
                                       ?.filter((b: any) => b.id !== selectedDeleteBatchId)
-                                      ?.map((b: any) => (
-                                        <option key={b.id} value={b.id}>{b.name}</option>
+                                      ?.map((b: any, idx: number) => (
+                                        <option key={b.id || b.name || `shift-batch-${idx}`} value={b.id}>{b.name}</option>
                                       ))}
                                   </select>
                                 </div>
@@ -1417,8 +1417,8 @@ export default function StudentsPage() {
                 {isLoadingSubjects && (
                   <div className="text-center text-gray-500 p-4 text-sm">Loading subjects...</div>
                 )}
-                {!isLoadingSubjects && subjects?.map((sub: any) => (
-                  <div key={sub.id} className="p-3 hover:bg-gray-50 flex items-center justify-between text-sm">
+                {!isLoadingSubjects && subjects?.map((sub: any, idx: number) => (
+                  <div key={sub.id || sub.code || `subject-item-${idx}`} className="p-3 hover:bg-gray-50 flex items-center justify-between text-sm">
                     <div>
                       <span className="font-medium text-gray-900">{sub.name}</span>
                       <span className="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-mono">
