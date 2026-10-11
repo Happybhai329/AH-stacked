@@ -4,6 +4,7 @@ import { SubjectsService } from './subjects.service';
 import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { RolesGuard } from '../common/roles.guard';
 import { Roles } from '../common/roles.decorator';
+import { Public } from '../common/public.decorator';
 
 @ApiTags('Subjects')
 @ApiBearerAuth()
@@ -12,6 +13,7 @@ import { Roles } from '../common/roles.decorator';
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all subjects' })
   async findAll() {

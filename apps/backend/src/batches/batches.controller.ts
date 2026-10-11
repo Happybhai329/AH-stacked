@@ -4,6 +4,7 @@ import { BatchesService } from './batches.service';
 import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { RolesGuard } from '../common/roles.guard';
 import { Roles } from '../common/roles.decorator';
+import { Public } from '../common/public.decorator';
 import { Request } from 'express';
 
 @ApiTags('Batches')
@@ -13,24 +14,28 @@ import { Request } from 'express';
 export class BatchesController {
   constructor(private readonly batchesService: BatchesService) {}
 
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all batches' })
   async findAll() {
     return this.batchesService.findAll();
   }
 
+  @Public()
   @Get('names')
   @ApiOperation({ summary: 'Get batch names only' })
   async getNames() {
     return this.batchesService.getNames();
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get batch by ID' })
   async findById(@Param('id') id: string) {
     return this.batchesService.findById(id);
   }
 
+  @Public()
   @Get('name/:name')
   @ApiOperation({ summary: 'Get batch by name' })
   async findByName(@Param('name') name: string) {
