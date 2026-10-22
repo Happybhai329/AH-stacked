@@ -329,8 +329,21 @@ Proprietary — Developed for **The Prime Classes**. All rights reserved.
 
 ---
 
-## 👤 Author
+---
 
-**The Prime Classes Engineering Team**
-- Maintainer: [@Happybhai329](https://github.com/Happybhai329)
-- Repository: [dms1234567890/AH-stacked](https://github.com/dms1234567890/AH-stacked)
+## 👤 Author & Maintainer
+
+**Happy Bhasin**  
+*Full Stack & AI Engineer* | Amity University Madhya Pradesh (B.Tech CSE with Minor in AI/ML)  
+
+- 🌐 **GitHub:** [@Happybhai329](https://github.com/Happybhai329)  
+- 💼 **LinkedIn:** [Happy Bhasin](https://www.linkedin.com/in/happy-bhasin-908191267)  
+- 📧 **Email:** [bhasinhappy0506@gmail.com](mailto:bhasinhappy0506@gmail.com)  
+- 📱 **Phone:** +91 9220553665  
+- 📍 **Location:** India (Open to Remote & Global Relocation)  
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
